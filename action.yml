@@ -31,19 +31,16 @@ runs:
 
         case $ref_type in
           # branch
-          heads)
-            echo "ref is a branch"
-            ;;
-          tags)
-            echo "ref is a tag"
-            ;;
+          # heads)
+          #   echo "ref is a branch"
+          #   ;;
+          # tags)
+          #   echo "ref is a tag"
+          #   ;;
           pull)
             echo "ref is a pull request"
-            # remote_ref="refs/remotes/pull/$ref"
-
             git fetch origin +refs/pull/$ref:refs/remotes/origin/pull/$ref
             ref="origin/pull/$ref"
-            # git checkout -b whatever-branch-name-you-want origin/pr/1/head
             ;;
           *)
             echo "ref_type = $ref_type"
