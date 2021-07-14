@@ -28,22 +28,15 @@ runs:
         ref=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/[^/]*\/(.*)$/\1/p')
 
         echo "ref = $ref"
+        echo "ref_type = $ref_type"
 
         case $ref_type in
-          # branch
-          # heads)
-          #   echo "ref is a branch"
-          #   ;;
-          # tags)
-          #   echo "ref is a tag"
-          #   ;;
           pull)
-            echo "ref is a pull request"
+            echo "ref is a pull request, fetch it"
             git fetch origin +refs/pull/$ref:refs/remotes/origin/pull/$ref
             ref="origin/pull/$ref"
             ;;
           *)
-            echo "ref_type = $ref_type"
             echo "use commit sha as ref"
             ref=${{ github.sha }}
             ;;
