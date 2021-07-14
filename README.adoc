@@ -5,8 +5,7 @@ The standard `actions/checkout` is written in `javascript` and sometimes it is n
 
 = prerequisites
 
-- This action works in `linux` and `macos` builds.
-- `git` has to be available. So, make sure `git` is installed before calling this action.
+- `git` must be available. So, make sure `git` is installed before calling this action.
 
 
 = step syntax
