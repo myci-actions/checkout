@@ -1,12 +1,12 @@
 = checkout github sources using git
 
 This action is a replacement of standard github's `actions/checkout` action.
+This action is implemented as `composite action`, so it does not require `node.js` interpreter.
 The standard `actions/checkout` is written in `javascript` and sometimes it is not possible to have `node12` injected to the container.
 
 = prerequisites
 
 - `git` must be available. So, make sure `git` is installed before calling this action.
-
 
 = step syntax
 
