@@ -22,7 +22,7 @@ runs:
     - name: clone repo
       run: |
         echo "clone"
-        git clone https://${{ github.token }}@github.com/${{ github.repository }} .
+        git clone --quiet https://${{ github.token }}@github.com/${{ github.repository }} .
         
         ref_type=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/([^/]*)\/.*$/\1/p')
         ref=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/[^/]*\/(.*)$/\1/p')
