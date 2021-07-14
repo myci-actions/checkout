@@ -1,0 +1,23 @@
+name: 'checkout github repo'
+description: 'Clone github repo and checkout commit'
+branding:
+  icon: 'archive'
+  color: 'green'
+inputs:
+  submodules:
+    description: 'init submodules, can be true or false'
+    required: false
+    default: false
+runs:
+  using: "composite"
+  steps:
+    - name: clone repo
+      run: |
+        git clone git@github.com:${{ github.repository }} .
+        git checkout ${{ github.sha }}
+
+        if [ "${{ inputs.submodules }}" == "true" ]; then
+          git submodule init
+          git submodule update --recursive
+        fi
+      shell: bash
