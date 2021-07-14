@@ -11,12 +11,21 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: clean
+      run: |
+        echo "clean"
+        for f in $(ls --almost-all); do
+          rm -rf $f
+        done
     - name: clone repo
       run: |
+        echo "clone"
         git clone https://${{ github.token }}@github.com/${{ github.repository }} .
+        echo "checkout"
         git checkout ${{ github.sha }}
 
         if [ "${{ inputs.submodules }}" == "true" ] && [ -f ".gitmodules" ]; then
+          echo "clone submodules"
           # replace ssh to https in .gitmodules
           # NOTE: $ in front of sed's expression string is needed to make macosx treat \t as tab characters, then also \1 needs to be \\1
           sed -E -i -e $'s/^[ \t]*url[ \t]*=[ \t]*git@github.com:([^\/]*\/[^\/]*)[ \t]*$/\turl = https:\/\/${{ github.token }}@github.com\/\\1/g' .gitmodules
