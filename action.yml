@@ -13,7 +13,7 @@ runs:
   steps:
     - name: clone repo
       run: |
-        git clone git@github.com:${{ github.repository }} .
+        git clone https://${{ github.token }}@github.com/${{ github.repository }} .
         git checkout ${{ github.sha }}
 
         if [ "${{ inputs.submodules }}" == "true" ]; then

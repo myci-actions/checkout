@@ -14,6 +14,10 @@ jobs:
     container: ${{ matrix.image_owner }}${{ matrix.os }}:${{ matrix.codename }}
     name: linux container - ${{ matrix.image_owner }}${{ matrix.os }}:${{ matrix.codename }}
     steps:
+      - name: install git
+        run: |
+          apt update
+          apt install --assume-yes git
       - name: checkout repo
         uses: myci-actions/checkout@master
       - name: check
