@@ -23,8 +23,6 @@ runs:
       run: |
         echo "clone"
         git clone https://${{ github.token }}@github.com/${{ github.repository }} .
-
-        echo "checkout"
         
         ref_type=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/([^/]*)\/.*$/\1/p')
         ref=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/[^/]*\/(.*)$/\1/p')
@@ -41,7 +39,11 @@ runs:
             ;;
           pull)
             echo "ref is a pull request"
-            ref="refs/remotes/pull/$ref"
+            # remote_ref="refs/remotes/pull/$ref"
+
+            git fetch origin +refs/pull/$ref:refs/remotes/origin/pull/$ref
+            ref="origin/pull/$ref"
+            # git checkout -b whatever-branch-name-you-want origin/pr/1/head
             ;;
           *)
             echo "ref_type = $ref_type"
@@ -50,6 +52,7 @@ runs:
             ;;
         esac
 
+        echo "checkout $ref"
         git checkout $ref
 
         if [ "${{ inputs.submodules }}" == "true" ] && [ -f ".gitmodules" ]; then
