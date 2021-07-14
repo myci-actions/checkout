@@ -20,9 +20,12 @@ jobs:
           apt install --assume-yes git
       - name: checkout repo
         uses: myci-actions/checkout@master
+        with:
+          submodules: true
       - name: check
         run: |
-          [ -f "action.yml" ]
+          [ -f "action.yml" ] &&
+          [ -f "ssh_submodule/action.yml" ]
   macosx:
     name: macosx
     runs-on: macos-latest
@@ -31,4 +34,5 @@ jobs:
         uses: myci-actions/checkout@master
       - name: check
         run: |
-          [ -f "action.yml" ]
+          [ -f "action.yml" ] &&
+          [ -f "ssh_submodule/action.yml" ]

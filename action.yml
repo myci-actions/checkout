@@ -7,13 +7,13 @@ inputs:
   submodules:
     description: 'init submodules, can be true or false'
     required: false
-    default: false
+    default: true
 runs:
   using: "composite"
   steps:
     - name: clone repo
       run: |
-        git clone https://${{ github.token }}@github.com/${{ github.repository }}.git .
+        git clone https://${{ github.token }}@github.com/${{ github.repository }} .
         git checkout ${{ github.sha }}
 
         if [ "${{ inputs.submodules }}" == "true" ]; then
