@@ -1,0 +1,31 @@
+= checkout github sources using git
+
+This action is a replacement of standard github's `actions/checkout` action.
+The standard `actions/checkout` is written in `javascript` and sometimes it is not possible to have `node12` injected to the container.
+
+= prerequisites
+
+- This action works in `linux` and `macos` builds.
+- `git` has to be available. So, make sure `git` is installed before calling this action.
+
+
+= step syntax
+
+....
+- name: <name>
+  uses: myci-actions/checkout@<version>
+  with:
+    submodules: <true/false>
+....
+
+arguments:
+
+- `<submodules>` - Whether to clone submodules or not. Optional. Default value: `true`.
+
+
+Step example:
+....
+- name: checkout sources
+  uses: myci-actions/checkout@1
+....
+

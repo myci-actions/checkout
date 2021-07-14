@@ -1,2 +1,0 @@
-# checkout
-checkout github repo
