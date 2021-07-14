@@ -17,6 +17,8 @@ runs:
         git checkout ${{ github.sha }}
 
         if [ "${{ inputs.submodules }}" == "true" ]; then
+          # replace ssh to https in .gitmodules
+          sed -E -i -e 's/^\s*url\s*=\s*git@github.com:([^\/]*\/[^\/]*)\s*$/\turl = https:\/\/github.com\/\1/g' .gitmodules
           git submodule init
           git submodule update --recursive
         fi
