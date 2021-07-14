@@ -29,7 +29,6 @@ runs:
         ref_type=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/([^/]*)\/.*$/\1/p')
         ref=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/[^/]*\/(.*)$/\1/p')
 
-        echo "ref_type = $ref_type"
         echo "ref = $ref"
 
         case $ref_type in
@@ -45,7 +44,8 @@ runs:
             ref="refs/remotes/pull/$ref"
             ;;
           *)
-            echo "ref is a commit"
+            echo "ref_type = $ref_type"
+            echo "use commit sha as ref"
             ref=${{ github.sha }}
             ;;
         esac
