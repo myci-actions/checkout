@@ -25,6 +25,6 @@ arguments:
 Step example:
 ....
 - name: checkout sources
-  uses: myci-actions/checkout@4
+  uses: myci-actions/checkout@5
 ....
 
