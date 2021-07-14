@@ -14,7 +14,8 @@ runs:
     - name: clean
       run: |
         echo "clean"
-        for f in $(ls --almost-all); do
+        # NOTE: ls on macosx does not support long names of keys, e.g. --almost-all
+        for f in $(ls -A); do
           rm -rf $f
         done
       shell: bash
@@ -31,7 +32,25 @@ runs:
         echo "ref_type = $ref_type"
         echo "ref = $ref"
 
-        git checkout ${{ github.sha }}
+        case $ref_type in
+          # branch
+          heads)
+            echo "ref is a branch"
+            ;;
+          tags)
+            echo "ref is a tag"
+            ;;
+          pull)
+            echo "ref is a pull request"
+            ref="refs/remotes/pull/$ref"
+            ;;
+          *)
+            echo "ref is a commit"
+            ref=${{ github.sha }}
+            ;;
+        esac
+
+        git checkout $ref
 
         if [ "${{ inputs.submodules }}" == "true" ] && [ -f ".gitmodules" ]; then
           echo "clone submodules"
