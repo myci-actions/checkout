@@ -21,7 +21,7 @@ jobs:
           [ -f "action.yml" ]
   macosx:
     name: macosx
-    runson: macos-latest
+    runs-on: macos-latest
     steps:
       - name: checkout repo
         uses: myci-actions/checkout@master
