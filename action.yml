@@ -22,7 +22,15 @@ runs:
       run: |
         echo "clone"
         git clone https://${{ github.token }}@github.com/${{ github.repository }} .
+
         echo "checkout"
+        
+        ref_type=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/([^/]*)\/.*$/\1/p')
+        ref=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/[^/]*\/(.*)$/\1/p')
+
+        echo "ref_type = $ref_type"
+        echo "ref = $ref"
+
         git checkout ${{ github.sha }}
 
         if [ "${{ inputs.submodules }}" == "true" ] && [ -f ".gitmodules" ]; then
