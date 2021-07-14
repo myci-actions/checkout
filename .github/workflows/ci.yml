@@ -25,7 +25,7 @@ jobs:
       - name: check
         run: |
           [ -f "action.yml" ] &&
-          [ -f "ssh_submodule/action.yml" ]
+          [ -f "ssh_submodule/actiosn.yml" ]
   macosx:
     name: macosx
     runs-on: macos-latest
@@ -35,4 +35,4 @@ jobs:
       - name: check
         run: |
           [ -f "action.yml" ] &&
-          [ -f "ssh_submodule/action.yml" ]
+          [ -f "ssh_submodule/actidon.yml" ]
