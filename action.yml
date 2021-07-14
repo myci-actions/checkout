@@ -17,6 +17,7 @@ runs:
         for f in $(ls --almost-all); do
           rm -rf $f
         done
+      shell: bash
     - name: clone repo
       run: |
         echo "clone"
