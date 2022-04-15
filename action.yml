@@ -21,6 +21,10 @@ runs:
       shell: bash
     - name: clone repo
       run: |
+        # On github public runners the current directory is owned by some other user.
+        # To avoid git unsafe repository error, add current directory as a safe one to git config.
+        git config --global --add safe.directory $(pwd)
+        
         echo "clone"
         git clone --quiet https://${{ github.token }}@github.com/${{ github.repository }} .
         
