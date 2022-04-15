@@ -21,35 +21,32 @@ runs:
       shell: bash
     - name: clone repo
       run: |
+        # On github public runners the current directory is owned by some other user.
+        # To avoid git unsafe repository error, add current directory as a safe one to git config.
+        git config --global --add safe.directory $(pwd)
+        
         echo "clone"
-        git clone https://${{ github.token }}@github.com/${{ github.repository }} .
-
-        echo "checkout"
+        git clone --quiet https://${{ github.token }}@github.com/${{ github.repository }} .
         
         ref_type=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/([^/]*)\/.*$/\1/p')
         ref=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/[^/]*\/(.*)$/\1/p')
 
-        echo "ref_type = $ref_type"
         echo "ref = $ref"
+        echo "ref_type = $ref_type"
 
         case $ref_type in
-          # branch
-          heads)
-            echo "ref is a branch"
-            ;;
-          tags)
-            echo "ref is a tag"
-            ;;
           pull)
-            echo "ref is a pull request"
-            ref="refs/remotes/pull/$ref"
+            echo "ref is a pull request, fetch it"
+            git fetch origin +refs/pull/$ref:refs/remotes/origin/pull/$ref
+            ref="origin/pull/$ref"
             ;;
           *)
-            echo "ref is a commit"
+            echo "use commit sha as ref"
             ref=${{ github.sha }}
             ;;
         esac
 
+        echo "checkout $ref"
         git checkout $ref
 
         if [ "${{ inputs.submodules }}" == "true" ] && [ -f ".gitmodules" ]; then
