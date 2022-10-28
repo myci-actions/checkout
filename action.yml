@@ -55,6 +55,6 @@ runs:
           # NOTE: $ in front of sed's expression string is needed to make macosx treat \t as tab characters, then also \1 needs to be \\1
           sed -E -i -e $'s/^[ \t]*url[ \t]*=[ \t]*git@github.com:([^\/]*\/[^\/]*)[ \t]*$/\turl = https:\/\/${{ github.token }}@github.com\/\\1/g' .gitmodules
           git submodule init
-          git submodule update --recursive
+          git submodule update --recursive --remote
         fi
       shell: bash
