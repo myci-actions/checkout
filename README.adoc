@@ -19,7 +19,7 @@ The standard `actions/checkout` is written in `javascript` and sometimes it is n
 
 arguments:
 
-- `<submodules>` - Whether to clone submodules or not. Optional. Default value: `true`.
+- `<submodules>` - Whether to clone submodules or not. Branch-tracking submodules are updated to the branch tip. Optional. Default value: `true`.
 
 
 Step example:
