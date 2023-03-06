@@ -26,11 +26,11 @@ runs:
         git config --global --add safe.directory $(pwd)
         
         # set credentials using "GIT_ASKPASS" to avoid the token to present in output of "git remote -v"
-        echo "#!/bin/bash\necho ${{ github.token }}" > git_askpass.sh
-        chmod +x git_Askpass.sh
+        echo "#!/bin/bash\necho ${{ github.token }}" > ~/git_askpass.sh
+        chmod +x ~/git_askpass.sh
         
         echo "clone"
-        GIT_ASKPASS=$(pwd)/git_askpass.sh git clone --quiet https://github.com/${{ github.repository }} .
+        GIT_ASKPASS=~/git_askpass.sh git clone --quiet https://github.com/${{ github.repository }} .
         
         ref_type=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/([^/]*)\/.*$/\1/p')
         ref=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/[^/]*\/(.*)$/\1/p')
