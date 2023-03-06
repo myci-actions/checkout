@@ -25,11 +25,12 @@ runs:
         # To avoid git unsafe repository error, add current directory as a safe one to git config.
         git config --global --add safe.directory $(pwd)
         
-        # set credentials using "insteadOf" to avoid the token to present in output of "git remote -v"
-        git config --global url."https://${{ github.token }}@github.com/".insteadOf "https://github.com/"
+        # set credentials using "GIT_ASKPASS" to avoid the token to present in output of "git remote -v"
+        echo "#!/bin/bash\necho ${{ github.token }}" > git_askpass.sh
+        chmod +x git_Askpass.sh
         
         echo "clone"
-        git clone --quiet https://github.com/${{ github.repository }} .
+        GIT_ASKPASS=$(pwd)/git_askpass.sh git clone --quiet https://github.com/${{ github.repository }} .
         
         ref_type=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/([^/]*)\/.*$/\1/p')
         ref=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/[^/]*\/(.*)$/\1/p')
