@@ -25,8 +25,11 @@ runs:
         # To avoid git unsafe repository error, add current directory as a safe one to git config.
         git config --global --add safe.directory $(pwd)
         
+        # set credentials using "instedOf"
+        git config url."https://${{ github.token }}@github.com/${{ github.repository }}".insteadOf "https://github.com/${{ github.repository }}"
+        
         echo "clone"
-        git clone --quiet https://${{ github.token }}@github.com/${{ github.repository }} .
+        git clone --quiet https://github.com/${{ github.repository }} .
         
         ref_type=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/([^/]*)\/.*$/\1/p')
         ref=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/[^/]*\/(.*)$/\1/p')
