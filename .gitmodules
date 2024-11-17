@@ -1,4 +1,4 @@
 [submodule "ssh_submodule"]
 	path = ssh_submodule
 	url = git@github.com:myci-actions/add-deb-repo
-	branch = master
+	branch = main
