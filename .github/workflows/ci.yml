@@ -19,7 +19,7 @@ jobs:
           apt update
           apt install --assume-yes git
       - name: checkout repo
-        uses: myci-actions/checkout@master
+        uses: myci-actions/checkout@main
         with:
           submodules: true
       - name: check
@@ -31,7 +31,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: checkout repo
-        uses: myci-actions/checkout@master
+        uses: myci-actions/checkout@main
       - name: check
         run: |
           [ -f "action.yml" ] &&
