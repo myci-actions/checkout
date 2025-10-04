@@ -55,14 +55,14 @@ runs:
 
         if [ "${{ inputs.submodules }}" != "false" ] && [ -f ".gitmodules" ]; then
           if [ "${{ inputs.submodules }}" == "remote" ]; then
-            remote="--remote"
+            remote=--remote
             recursive=
-          if [ "${{ inputs.submodules }}" == "recursive" ]; then
+          elif [ "${{ inputs.submodules }}" == "recursive" ]; then
             remote=
-            recursive="--recursive"
+            recursive=--recursive
           elif [ "${{ inputs.submodules }}" == "remote_recursive" ]; then
-            remote="--remote"
-            recursive="--recursive"
+            remote=--remote
+            recursive=--recursive
           else
             remote=
             recursive=
