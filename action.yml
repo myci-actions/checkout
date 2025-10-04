@@ -5,9 +5,9 @@ branding:
   color: 'green'
 inputs:
   submodules:
-    description: 'init submodules, can be true or false'
+    description: 'init submodules, can be true, false, remote, recursive, remote_recursive'
     required: false
-    default: true
+    default: remote_recursive
 runs:
   using: "composite"
   steps:
@@ -53,12 +53,22 @@ runs:
         echo "checkout $ref"
         git checkout $ref
 
-        if [ "${{ inputs.submodules }}" == "true" ] && [ -f ".gitmodules" ]; then
+        if [ "${{ inputs.submodules }}" != "false" ] && [ -f ".gitmodules" ]; then
+          if [ "${{ inputs.submodules }}" == "remote" ]; then
+            remote_recursive="--remote"
+          if [ "${{ inputs.submodules }}" == "recursive" ]; then
+            remote_recursive="--recursive"
+          elif [ "${{ inputs.submodules }}" == "remote_recursive" ]; then
+            remote_recursive="--remote --recursive"
+          else
+            remote_recursive=
+          fi
+
           echo "clone submodules"
           # replace ssh to https in .gitmodules
           # NOTE: $ in front of sed's expression string is needed to make macosx treat \t as tab characters, then also \1 needs to be \\1
           sed -E -i -e $'s/^[ \t]*url[ \t]*=[ \t]*git@github.com:([^\/]*\/[^\/]*)[ \t]*$/\turl = https:\/\/${{ github.token }}@github.com\/\\1/g' .gitmodules
           git submodule init
-          git submodule update --recursive --remote
+          git submodule update $remote_recursive
         fi
       shell: bash

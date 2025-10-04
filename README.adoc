@@ -14,17 +14,17 @@ The standard `actions/checkout` is written in `javascript` and sometimes it is n
 - name: <name>
   uses: myci-actions/checkout@<version>
   with:
-    submodules: <true/false>
+    submodules: <true/false/remote/recursive/remote_recursive>
 ....
 
 arguments:
 
-- `<submodules>` - Whether to clone submodules or not. Branch-tracking submodules are updated to the branch tip. Optional. Default value: `true`.
+- `<submodules>` - Whether to clone submodules or not. Branch-tracking submodules are updated to the branch tip. Optional. Default value: `remote_recursive`.
 
 
 Step example:
 ....
 - name: checkout sources
-  uses: myci-actions/checkout@8
+  uses: myci-actions/checkout@9
 ....
 
