@@ -55,13 +55,17 @@ runs:
 
         if [ "${{ inputs.submodules }}" != "false" ] && [ -f ".gitmodules" ]; then
           if [ "${{ inputs.submodules }}" == "remote" ]; then
-            remote_recursive="--remote"
+            remote="--remote"
+            recursive=
           if [ "${{ inputs.submodules }}" == "recursive" ]; then
-            remote_recursive="--recursive"
+            remote=
+            recursive="--recursive"
           elif [ "${{ inputs.submodules }}" == "remote_recursive" ]; then
-            remote_recursive="--remote --recursive"
+            remote="--remote"
+            recursive="--recursive"
           else
-            remote_recursive=
+            remote=
+            recursive=
           fi
 
           echo "clone submodules"
@@ -69,6 +73,6 @@ runs:
           # NOTE: $ in front of sed's expression string is needed to make macosx treat \t as tab characters, then also \1 needs to be \\1
           sed -E -i -e $'s/^[ \t]*url[ \t]*=[ \t]*git@github.com:([^\/]*\/[^\/]*)[ \t]*$/\turl = https:\/\/${{ github.token }}@github.com\/\\1/g' .gitmodules
           git submodule init
-          git submodule update $remote_recursive
+          git submodule update $remote $recursive
         fi
       shell: bash
