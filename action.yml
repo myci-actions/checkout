@@ -37,12 +37,17 @@ runs:
         echo "#!/bin/bash\necho ${{ github.token }}" > ~/git_askpass.sh
         chmod +x ~/git_askpass.sh
 
+        # create destination dir
+        echo "create destination dir: ${{ inputs.dir }}"
+        mkdir -p ${{ inputs.dir }}
+        pushd ${{ inputs.dir }}
+
         if [ -z "${{ inputs.url }}" ]; then
           # no clone URL is given, clone current repository
 
-          echo "clone to ${{ inputs.dir }}"
+          echo "clone"
         
-          GIT_ASKPASS=~/git_askpass.sh git clone --quiet https://github.com/${{ github.repository }} ${{ inputs.dir }}
+          GIT_ASKPASS=~/git_askpass.sh git clone --quiet https://github.com/${{ github.repository }} .
         
           ref_type=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/([^/]*)\/.*$/\1/p')
           ref=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/[^/]*\/(.*)$/\1/p')
@@ -63,14 +68,12 @@ runs:
           esac
 
           echo "checkout $ref"
-          pushd ${{ inputs.dir }}
           git checkout $ref
-          popd
         else
           # clone URL is explicitly given, clone it
-          echo "clone from ${{ inputs.url }} to ${{ inputs.dir }}"
+          echo "clone from ${{ inputs.url }}"
 
-          GIT_ASKPASS=~/git_askpass.sh git clone --quiet ${{ inputs.url }} ${{ inputs.dir }}
+          GIT_ASKPASS=~/git_askpass.sh git clone --quiet ${{ inputs.url }} .
         fi
 
         if [ "${{ inputs.submodules }}" != "false" ] && [ -f ".gitmodules" ]; then
@@ -95,4 +98,6 @@ runs:
           git submodule init
           git submodule update $remote $recursive
         fi
+
+        popd
       shell: bash
