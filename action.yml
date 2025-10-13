@@ -40,7 +40,7 @@ runs:
         if [ -z "${{ inputs.url }}" ]; then
           # no clone URL is given, clone current repository
 
-          echo "clone"
+          echo "clone to ${{ inputs.dir }}"
         
           GIT_ASKPASS=~/git_askpass.sh git clone --quiet https://github.com/${{ github.repository }} ${{ inputs.dir }}
         
@@ -66,7 +66,7 @@ runs:
           git checkout $ref
         else
           # clone URL is explicitly given, clone it
-          echo "clone from ${{ inputs.url }}"
+          echo "clone from ${{ inputs.url }} to ${{ inputs.dir }}"
 
           GIT_ASKPASS=~/git_askpass.sh git clone --quiet ${{ inputs.url }} ${{ inputs.dir }}
         fi
