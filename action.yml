@@ -66,9 +66,9 @@ runs:
           git checkout $ref
         else
           # clone URL is explicitly given, clone it
-          echo "clone from ${{ github.url }}"
+          echo "clone from ${{ inputs.url }}"
 
-          GIT_ASKPASS=~/git_askpass.sh git clone --quiet ${{ github.url }} ${{ inputs.dir }}
+          GIT_ASKPASS=~/git_askpass.sh git clone --quiet ${{ inputs.url }} ${{ inputs.dir }}
         fi
 
         if [ "${{ inputs.submodules }}" != "false" ] && [ -f ".gitmodules" ]; then
