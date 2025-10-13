@@ -8,11 +8,11 @@ inputs:
     description: 'Init submodules, can be true, false, remote, recursive, remote_recursive.'
     required: false
     default: remote_recursive
-  url:
+  repository:
     description: 'Clone from this given https URL. If empty, then current repo is cloned.'
     required: false
     default:
-  dir:
+  path:
     description: "Destination direcotry. The destination directory will be created if doesn't exist. If empty, will clone to directory named same as the repo."
     required: false
     default: .
@@ -30,11 +30,11 @@ runs:
         chmod +x ~/git_askpass.sh
 
         # create destination dir
-        echo "create destination dir: ${{ inputs.dir }}"
-        mkdir -p ${{ inputs.dir }}
-        pushd ${{ inputs.dir }}
+        echo "create destination dir: ${{ inputs.path }}"
+        mkdir -p ${{ inputs.path }}
+        pushd ${{ inputs.path }}
 
-        if [ -z "${{ inputs.url }}" ]; then
+        if [ -z "${{ inputs.repository }}" ]; then
           # no clone URL is given, clone current repository
 
           echo "clone"
@@ -63,9 +63,9 @@ runs:
           git checkout $ref
         else
           # clone URL is explicitly given, clone it
-          echo "clone from ${{ inputs.url }}"
+          echo "clone from ${{ inputs.repository }}"
 
-          GIT_ASKPASS=~/git_askpass.sh git clone --quiet ${{ inputs.url }} .
+          GIT_ASKPASS=~/git_askpass.sh git clone --quiet ${{ inputs.repository }} .
         fi
 
         if [ "${{ inputs.submodules }}" != "false" ] && [ -f ".gitmodules" ]; then
