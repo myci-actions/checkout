@@ -63,7 +63,9 @@ runs:
           esac
 
           echo "checkout $ref"
+          pushd ${{ inputs.dir }}
           git checkout $ref
+          popd
         else
           # clone URL is explicitly given, clone it
           echo "clone from ${{ inputs.url }} to ${{ inputs.dir }}"
