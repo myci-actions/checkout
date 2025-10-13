@@ -19,14 +19,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: clean
-      run: |
-        echo "clean"
-        # NOTE: ls on macosx does not support long names of keys, e.g. --almost-all
-        for f in $(ls -A); do
-          rm -rf $f
-        done
-      shell: bash
     - name: clone repo
       run: |
         # On github public runners the current directory is owned by some other user.
