@@ -5,13 +5,17 @@ branding:
   color: 'green'
 inputs:
   submodules:
-    description: 'init submodules, can be true, false, remote, recursive, remote_recursive'
+    description: 'Init submodules, can be true, false, remote, recursive, remote_recursive.'
     required: false
     default: remote_recursive
   url:
-    description: 'clone from this given https URL. If empty, then current repo is cloned.'
+    description: 'Clone from this given https URL. If empty, then current repo is cloned.'
     required: false
     default:
+  dir:
+    description: "Destination direcotry. The destination directory will be created if doesn't exist. If empty, will clone to directory named same as the repo."
+    required: false
+    default: .
 runs:
   using: "composite"
   steps:
@@ -38,7 +42,7 @@ runs:
 
           echo "clone"
         
-          GIT_ASKPASS=~/git_askpass.sh git clone --quiet https://github.com/${{ github.repository }} .
+          GIT_ASKPASS=~/git_askpass.sh git clone --quiet https://github.com/${{ github.repository }} ${{ inputs.dir }}
         
           ref_type=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/([^/]*)\/.*$/\1/p')
           ref=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/[^/]*\/(.*)$/\1/p')
@@ -64,7 +68,7 @@ runs:
           # clone URL is explicitly given, clone it
           echo "clone from ${{ github.url }}"
 
-          GIT_ASKPASS=~/git_askpass.sh git clone --quiet ${{ github.url }} .
+          GIT_ASKPASS=~/git_askpass.sh git clone --quiet ${{ github.url }} ${{ inputs.dir }}
         fi
 
         if [ "${{ inputs.submodules }}" != "false" ] && [ -f ".gitmodules" ]; then
