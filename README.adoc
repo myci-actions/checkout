@@ -15,11 +15,15 @@ The standard `actions/checkout` is written in `javascript` and sometimes it is n
   uses: myci-actions/checkout@<version>
   with:
     submodules: <true/false/remote/recursive/remote_recursive>
+    path: <destination-directory>
+    repository: <repository-URL>
 ....
 
 arguments:
 
-- `<submodules>` - Whether to clone submodules or not. Branch-tracking submodules are updated to the branch tip. Optional. Default value: `remote_recursive`.
+- `submodules` - Whether to clone submodules or not. Possible values: `true`= init submodules; `false` = do not init submodules; `remote` = init submodules and update them to the remote tracking branch; `recursive` = init submodules recursively; `remote_recursive` = init submodules recursively and update them to the remote tracking branch. Optional. Default value: `remote_recursive`.
+- `path` - destination directory. Optional. Default value: `.`.
+- `repository` - repository URL to clone. If empty then the current repository is cloned. Optional. Default value: empty.
 
 
 Step example:
