@@ -8,6 +8,10 @@ inputs:
     description: 'init submodules, can be true, false, remote, recursive, remote_recursive'
     required: false
     default: remote_recursive
+  url:
+    description: 'clone from this given https URL. If empty, then current repo is cloned.'
+    required: false
+    default:
 runs:
   using: "composite"
   steps:
@@ -28,30 +32,40 @@ runs:
         # set credentials using "GIT_ASKPASS" to avoid the token to present in output of "git remote -v"
         echo "#!/bin/bash\necho ${{ github.token }}" > ~/git_askpass.sh
         chmod +x ~/git_askpass.sh
+
+        if [ -z "${{ inputs.url }}" ]; then
+          # no clone URL is given, clone current repository
+
+          echo "clone"
         
-        echo "clone"
-        GIT_ASKPASS=~/git_askpass.sh git clone --quiet https://github.com/${{ github.repository }} .
+          GIT_ASKPASS=~/git_askpass.sh git clone --quiet https://github.com/${{ github.repository }} .
         
-        ref_type=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/([^/]*)\/.*$/\1/p')
-        ref=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/[^/]*\/(.*)$/\1/p')
+          ref_type=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/([^/]*)\/.*$/\1/p')
+          ref=$(echo ${{ github.ref }} | sed -E -n -e 's/^refs\/[^/]*\/(.*)$/\1/p')
 
-        echo "ref = $ref"
-        echo "ref_type = $ref_type"
+          echo "ref = $ref"
+          echo "ref_type = $ref_type"
 
-        case $ref_type in
-          pull)
-            echo "ref is a pull request, fetch it"
-            git fetch origin +refs/pull/$ref:refs/remotes/origin/pull/$ref
-            ref="origin/pull/$ref"
-            ;;
-          *)
-            echo "use commit sha as ref"
-            ref=${{ github.sha }}
-            ;;
-        esac
+          case $ref_type in
+            pull)
+              echo "ref is a pull request, fetch it"
+              git fetch origin +refs/pull/$ref:refs/remotes/origin/pull/$ref
+              ref="origin/pull/$ref"
+              ;;
+            *)
+              echo "use commit sha as ref"
+              ref=${{ github.sha }}
+              ;;
+          esac
 
-        echo "checkout $ref"
-        git checkout $ref
+          echo "checkout $ref"
+          git checkout $ref
+        else
+          # clone URL is explicitly given, clone it
+          echo "clone from ${{ github.url }}"
+
+          GIT_ASKPASS=~/git_askpass.sh git clone --quiet ${{ github.url }} .
+        fi
 
         if [ "${{ inputs.submodules }}" != "false" ] && [ -f ".gitmodules" ]; then
           if [ "${{ inputs.submodules }}" == "remote" ]; then
